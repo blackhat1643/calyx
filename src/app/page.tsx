@@ -479,7 +479,7 @@ export default function BookingPage() {
                     </div>
                     <div className="md:col-span-4 flex justify-end">
                        <div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-white/[0.02] flex items-center justify-center border border-white/5 group-hover:scale-110 group-hover:bg-gold-500/5 transition-all duration-700 shadow-inner">
-                         {React.cloneElement(box.icon as React.ReactElement, { className: "w-16 h-16 md:w-24 md:h-24 " + (box.num === "02" ? "text-red-500" : "text-gold-500") })}
+                         {React.cloneElement(box.icon as React.ReactElement<any>, { className: "w-16 h-16 md:w-24 md:h-24 " + (box.num === "02" ? "text-red-500" : "text-gold-500") })}
                        </div>
                     </div>
                   </div>

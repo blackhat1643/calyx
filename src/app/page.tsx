@@ -23,8 +23,8 @@ export default function BookingPage() {
   const imageRadius = useTransform(sectionTwoScroll, [0, 0.5], ["0px", "40px"]);
   
   // Text animations
-  const textOpacity = useTransform(sectionTwoScroll, [0.3, 0.5], [0, 1]);
-  const textX = useTransform(sectionTwoScroll, [0.3, 0.5], [-40, 0]);
+  const textOpacity = useTransform(sectionTwoScroll, [0.2, 0.4], [0, 1]);
+  const textX = useTransform(sectionTwoScroll, [0.2, 0.4], [-40, 0]);
 
   // Section 5: Individual Title Scales
   const scaleTitle1 = useTransform(sectionFiveScroll, [0.1, 0.2], [1, 0.8]);
@@ -421,32 +421,32 @@ export default function BookingPage() {
                 title: "Elite Networking Protocols",
                 desc: "Master the unspoken language of the global high-net-worth elite. From private club etiquette to establishing high-trust cross-border alliances.",
                 icon: <Users className="w-8 h-8 text-gold-500" />,
-                bg: "bg-[#0a0a0a]",
-                border: "border-gold-500/20"
+                bg: "from-gold-500/10 via-[#0a0a0a] to-[#050505]",
+                accent: "gold"
               },
               {
                 num: "02",
                 title: "Luxury Market Mastering",
                 desc: "Analyze the 2026 architectural and rental trends defining the premium villa landscape across Europe and Asia with specialized yield mechanics.",
                 icon: <Star className="w-8 h-8 text-red-500" />,
-                bg: "bg-[#0c0c0c]",
-                border: "border-red-500/20"
+                bg: "from-red-500/10 via-[#0c0c0c] to-[#050505]",
+                accent: "red"
               },
               {
                 num: "03",
                 title: "Portfolio Strategy",
                 desc: "Discover how to diversify global assets through high-yield luxury real estate and exclusive property management for non-traditional wealth.",
                 icon: <Shield className="w-8 h-8 text-gold-500" />,
-                bg: "bg-[#0e0e0e]",
-                border: "border-white/5"
+                bg: "from-blue-500/5 via-[#0e0e0e] to-[#050505]",
+                accent: "gold"
               },
               {
                 num: "04",
                 title: "Cinematic Presence",
                 desc: "Understand the art of visual storytelling used to market the world's most prestigious event destinations and ultra-luxe properties.",
                 icon: <Calendar className="w-8 h-8 text-gold-500" />,
-                bg: "bg-[#101010]",
-                border: "border-white/5"
+                bg: "from-purple-500/10 via-[#101010] to-[#050505]",
+                accent: "gold"
               }
             ].map((box, i) => (
               <div 
@@ -458,28 +458,37 @@ export default function BookingPage() {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className={`group relative p-10 md:p-12 md:pt-0 md:pb-16 rounded-[3.5rem] ${box.bg} border ${box.border} shadow-2xl overflow-hidden min-h-[300px] flex items-start`}
+                  className={`group relative p-10 md:p-12 md:pt-0 md:pb-16 rounded-[4rem] bg-gradient-to-br ${box.bg} backdrop-blur-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden min-h-[350px] flex items-start transition-all duration-700 hover:border-${box.accent}-500/40`}
                 >
+                  {/* Dynamic Glow Mesh */}
+                  <div className={`absolute top-0 right-0 w-96 h-96 bg-${box.accent}-500/5 blur-[120px] rounded-full group-hover:bg-${box.accent}-500/10 transition-colors duration-700`} />
+                  
                   {/* Tempered Background Number */}
                   <div className="absolute top-0 left-0 w-full h-full flex items-start justify-start pointer-events-none p-10">
-                    <span className="text-[180px] md:text-[250px] font-black text-white/[0.03] leading-none -translate-x-12 -translate-y-12 select-none uppercase">
+                    <span className="text-[200px] md:text-[280px] font-black text-white/[0.02] group-hover:text-white/[0.04] leading-none -translate-x-12 -translate-y-12 select-none uppercase transition-all duration-1000">
                       {box.num}
                     </span>
                   </div>
 
-                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
-                    <div className="md:col-span-8 space-y-4">
+                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full pt-12 md:pt-16">
+                    <div className="md:col-span-8 space-y-6">
                        <motion.h3 
                          style={{ scale: scales[i], originX: 0 }}
-                         className="text-3xl md:text-5xl font-bold display-font tracking-tight text-white"
+                         className="text-3xl md:text-5xl font-bold display-font tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-500 transition-all"
                        >
                          {box.title}
                        </motion.h3>
-                       <p className="text-xl text-gray-400 font-light leading-relaxed max-w-2xl">{box.desc}</p>
+                       <p className="text-xl text-gray-400 font-light leading-relaxed max-w-2xl group-hover:text-gray-300 transition-colors">
+                         {box.desc}
+                       </p>
                     </div>
                     <div className="md:col-span-4 flex justify-end">
-                       <div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-white/[0.02] flex items-center justify-center border border-white/5 group-hover:scale-110 group-hover:bg-gold-500/5 transition-all duration-700 shadow-inner">
-                         {React.cloneElement(box.icon as React.ReactElement<any>, { className: "w-16 h-16 md:w-24 md:h-24 " + (box.num === "02" ? "text-red-500" : "text-gold-500") })}
+                       <div className="relative w-32 h-32 md:w-56 md:h-56 rounded-full bg-white/[0.03] flex items-center justify-center border border-white/10 group-hover:scale-105 group-hover:bg-gold-500/5 transition-all duration-700 overflow-hidden shadow-2xl">
+                          {/* Inner Glow */}
+                          <div className={`absolute inset-0 bg-gradient-to-tr from-${box.accent}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity`} />
+                          {React.cloneElement(box.icon as React.ReactElement<any>, { 
+                            className: `w-16 h-16 md:w-28 md:h-28 relative z-10 transition-transform duration-700 group-hover:rotate-12 ${box.accent === 'red' ? 'text-red-500' : 'text-gold-500'}` 
+                          })}
                        </div>
                     </div>
                   </div>

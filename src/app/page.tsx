@@ -7,8 +7,13 @@ import { Calendar, Users, Star, ArrowRight, Shield, Check } from "lucide-react";
 export default function BookingPage() {
   // Second section scroll animations
   const sectionTwoRef = useRef(null);
+  const sectionFiveRef = useRef(null);
   const { scrollYProgress: sectionTwoScroll } = useScroll({
     target: sectionTwoRef,
+    offset: ["start start", "end end"]
+  });
+  const { scrollYProgress: sectionFiveScroll } = useScroll({
+    target: sectionFiveRef,
     offset: ["start start", "end end"]
   });
 
@@ -20,6 +25,14 @@ export default function BookingPage() {
   // Text animations
   const textOpacity = useTransform(sectionTwoScroll, [0.3, 0.5], [0, 1]);
   const textX = useTransform(sectionTwoScroll, [0.3, 0.5], [-40, 0]);
+
+  // Section 5: Individual Title Scales
+  const scaleTitle1 = useTransform(sectionFiveScroll, [0.1, 0.2], [1, 0.8]);
+  const scaleTitle2 = useTransform(sectionFiveScroll, [0.3, 0.4], [1, 0.8]);
+  const scaleTitle3 = useTransform(sectionFiveScroll, [0.5, 0.6], [1, 0.8]);
+  const scaleTitle4 = useTransform(sectionFiveScroll, [0.7, 0.8], [1, 0.8]);
+
+  const scales = [scaleTitle1, scaleTitle2, scaleTitle3, scaleTitle4];
 
   return (
     <main className="relative bg-black text-white">
@@ -155,33 +168,37 @@ export default function BookingPage() {
         </section>
       </div>
 
-      {/* Second Section: Minimal Event Details (Horizontal) */}
-      <section className="relative py-2 px-0 bg-black border-y border-white/5">
+      {/* Second Section: Minimal Event Details (Horizontal with Tempered Background) */}
+      <section className="relative py-2 px-0 bg-black border-y border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-0">
           {[
             {
               num: "01",
               title: "Start Time",
               detail: "09:00 PM EST",
-              color: "gold"
+              color: "gold",
+              icon: <div className="w-2.5 h-2.5 rounded-full bg-gold-500 animate-pulse" />
             },
             {
               num: "02",
               title: "YouTube",
               detail: "Global Live",
-              color: "red"
+              color: "red",
+              icon: <svg className="w-7 h-7 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z"/></svg>
             },
             {
               num: "03",
               title: "Ceremony",
               detail: "April 25, 2026",
-              color: "gold"
+              color: "gold",
+              icon: <Calendar className="w-6 h-6 text-gold-500/50" />
             },
             {
               num: "04",
               title: "Language",
               detail: "EN & ES",
-              color: "gold"
+              color: "gold",
+              icon: <Users className="w-6 h-6 text-gold-500/50" />
             }
           ].map((item, i) => (
             <motion.div 
@@ -190,16 +207,27 @@ export default function BookingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: i * 0.1 }}
-              className={`group px-8 py-8 md:py-4 flex flex-col items-center text-center space-y-3 ${i !== 3 ? 'md:border-r border-white/10' : ''}`}
+              className={`group relative px-8 py-8 md:py-6 flex flex-col items-center text-center space-y-2 ${i !== 3 ? 'md:border-r border-white/10' : ''}`}
             >
-              <span className="text-gray-700 font-mono text-[10px] tracking-[0.3em] font-bold">{item.num}</span>
-              <div className="space-y-0.5">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-gray-400 group-hover:text-white transition-colors">
-                  {item.title}
-                </h3>
-                <p className={`text-base md:text-lg font-bold ${item.color === 'red' ? 'text-red-500' : 'gold-text'}`}>
-                  {item.detail}
-                </p>
+              {/* Tempered Background Number */}
+              <div className="absolute inset-0 flex items-start justify-start pointer-events-none select-none overflow-hidden">
+                <span className="text-[120px] font-black text-white/5 transition-colors group-hover:text-white/[0.08] duration-700 leading-none -translate-x-6 -translate-y-4">
+                  {item.num}
+                </span>
+              </div>
+
+              <div className="relative z-10 flex flex-col items-center space-y-3">
+                <div className="p-2">
+                   {item.icon}
+                </div>
+                <div className="space-y-0.5">
+                  <h3 className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-bold group-hover:text-white transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className={`text-base md:text-lg font-bold ${item.color === 'red' ? 'text-red-500' : 'gold-text'}`}>
+                    {item.detail}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -372,120 +400,95 @@ export default function BookingPage() {
         </div>
       </section>
 
-      {/* Fifth Section: What You'll Learn (Aesthetic Upgrade) */}
-      <section className="relative py-32 px-6 md:px-24 bg-[#030303] overflow-hidden">
-        {/* Cinematic Background Mesh */}
-        <div className="absolute top-0 inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold-500/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-gold-600/10 blur-[120px] rounded-full" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div className="space-y-4">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-3"
-              >
-                <div className="w-12 h-[1px] bg-gold-500/50" />
-                <span className="text-gold-500 font-bold uppercase tracking-[0.5em] text-[10px]">Excellence Defined</span>
-              </motion.div>
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                className="text-5xl md:text-7xl font-bold display-font leading-[0.9] tracking-tighter"
-              >
-                What You&apos;ll <br/><span className="italic text-gray-500">Master</span>
-              </motion.h2>
-            </div>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="text-gray-500 max-w-xs font-light text-lg leading-relaxed"
-            >
-              Four pillars of specialized knowledge curated for the next generation of global leaders.
-            </motion.p>
+      {/* Fifth Section: What You'll Learn (Sticky Stacking Edition) */}
+      <section ref={sectionFiveRef} className="relative pt-32 pb-32 px-6 md:px-24 bg-[#030303] min-h-[150vh]">
+        <div className="max-w-6xl mx-auto space-y-0">
+          <div className="mb-20 text-center space-y-4">
+             <motion.span 
+               initial={{ opacity: 0 }}
+               whileInView={{ opacity: 1 }}
+               className="text-gold-500 font-bold uppercase tracking-[0.5em] text-[10px]"
+             >
+               Curriculum for the Elite
+             </motion.span>
+             <h2 className="text-5xl md:text-7xl font-bold display-font">What You&apos;ll Master</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-6 md:grid-rows-2 h-auto lg:h-[700px]">
-            {/* Box 1: Large Feature */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="group relative md:col-span-4 md:row-span-1 rounded-[3rem] bg-gradient-to-br from-white/[0.05] to-transparent border border-white/10 p-10 overflow-hidden flex flex-col justify-between hover:border-gold-500/30 transition-all duration-700 shadow-2xl"
-            >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/5 blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-gold-500/10 transition-colors" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-gold-500/10 flex items-center justify-center mb-10 border border-gold-500/20 group-hover:scale-110 group-hover:rotate-12 transition-all">
-                  <Users className="w-7 h-7 text-gold-500" />
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold display-font mb-4">Elite Networking Protocols</h3>
-                <p className="text-gray-400 font-light text-xl max-w-lg leading-relaxed">
-                  Master the unspoken language of the global high-net-worth elite. From private club etiquette to establishing high-trust cross-border alliances.
-                </p>
-              </div>
-              <div className="mt-8 flex items-center gap-2 text-gold-500 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0 duration-500">
-                Dive Deep <ArrowRight className="w-4 h-4" />
-              </div>
-            </motion.div>
+          <div className="flex flex-col space-y-12">
+            {[
+              {
+                num: "01",
+                title: "Elite Networking Protocols",
+                desc: "Master the unspoken language of the global high-net-worth elite. From private club etiquette to establishing high-trust cross-border alliances.",
+                icon: <Users className="w-8 h-8 text-gold-500" />,
+                bg: "bg-[#0a0a0a]",
+                border: "border-gold-500/20"
+              },
+              {
+                num: "02",
+                title: "Luxury Market Mastering",
+                desc: "Analyze the 2026 architectural and rental trends defining the premium villa landscape across Europe and Asia with specialized yield mechanics.",
+                icon: <Star className="w-8 h-8 text-red-500" />,
+                bg: "bg-[#0c0c0c]",
+                border: "border-red-500/20"
+              },
+              {
+                num: "03",
+                title: "Portfolio Strategy",
+                desc: "Discover how to diversify global assets through high-yield luxury real estate and exclusive property management for non-traditional wealth.",
+                icon: <Shield className="w-8 h-8 text-gold-500" />,
+                bg: "bg-[#0e0e0e]",
+                border: "border-white/5"
+              },
+              {
+                num: "04",
+                title: "Cinematic Presence",
+                desc: "Understand the art of visual storytelling used to market the world's most prestigious event destinations and ultra-luxe properties.",
+                icon: <Calendar className="w-8 h-8 text-gold-500" />,
+                bg: "bg-[#101010]",
+                border: "border-white/5"
+              }
+            ].map((box, i) => (
+              <div 
+                key={i} 
+                className="sticky h-auto flex flex-col justify-start"
+                style={{ top: `${100 + (i * 80)}px`, zIndex: i + 10 }}
+              >
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className={`group relative p-10 md:p-12 md:pt-0 md:pb-16 rounded-[3.5rem] ${box.bg} border ${box.border} shadow-2xl overflow-hidden min-h-[300px] flex items-start`}
+                >
+                  {/* Tempered Background Number */}
+                  <div className="absolute top-0 left-0 w-full h-full flex items-start justify-start pointer-events-none p-10">
+                    <span className="text-[180px] md:text-[250px] font-black text-white/[0.03] leading-none -translate-x-12 -translate-y-12 select-none uppercase">
+                      {box.num}
+                    </span>
+                  </div>
 
-            {/* Box 2: Tall/Thin */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="group relative md:col-span-2 md:row-span-2 rounded-[3rem] bg-[#0c0c0c] border border-white/5 p-10 overflow-hidden flex flex-col justify-between hover:border-red-500/30 transition-all duration-700"
-            >
-              <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-red-500/5 blur-[60px] group-hover:bg-red-500/10 transition-colors" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center mb-10 border border-red-500/20 group-hover:scale-110 transition-transform">
-                  <Star className="w-7 h-7 text-red-500" />
-                </div>
-                <h3 className="text-3xl font-bold display-font mb-6 leading-tight">Luxury Market Mastering</h3>
-                <p className="text-gray-500 font-light text-lg space-y-4">
-                  <span>• 2026 Architectural Forecast</span><br/>
-                  <span>• Premium Rental Yield Mechanics</span><br/>
-                  <span>• Emerging Luxury Districts</span>
-                </p>
+                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
+                    <div className="md:col-span-8 space-y-4">
+                       <motion.h3 
+                         style={{ scale: scales[i], originX: 0 }}
+                         className="text-3xl md:text-5xl font-bold display-font tracking-tight text-white"
+                       >
+                         {box.title}
+                       </motion.h3>
+                       <p className="text-xl text-gray-400 font-light leading-relaxed max-w-2xl">{box.desc}</p>
+                    </div>
+                    <div className="md:col-span-4 flex justify-end">
+                       <div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-white/[0.02] flex items-center justify-center border border-white/5 group-hover:scale-110 group-hover:bg-gold-500/5 transition-all duration-700 shadow-inner">
+                         {React.cloneElement(box.icon as React.ReactElement, { className: "w-16 h-16 md:w-24 md:h-24 " + (box.num === "02" ? "text-red-500" : "text-gold-500") })}
+                       </div>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-              <div className="mt-12 text-gray-800 text-7xl font-bold display-font select-none group-hover:text-red-500/10 transition-colors">02</div>
-            </motion.div>
-
-            {/* Box 3: Small Square */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="group relative md:col-span-2 md:row-span-1 rounded-[3rem] bg-white/[0.02] border border-white/5 p-10 hover:bg-white/[0.04] transition-all duration-700"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 border border-white/10 group-hover:bg-gold-500/20 transition-colors">
-                <Shield className="w-6 h-6 text-gray-400 group-hover:text-gold-500" />
-              </div>
-              <h3 className="text-2xl font-bold display-font mb-2">Portfolio Strategy</h3>
-              <p className="text-gray-500 font-light text-sm leading-relaxed">Diversify non-traditional assets via ultra-premium real estate.</p>
-            </motion.div>
-
-            {/* Box 4: Small Square (Horizontal Mix) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="group relative md:col-span-2 md:row-span-1 rounded-[3rem] bg-gradient-to-tr from-gold-500/5 to-transparent border border-white/5 p-10 hover:border-gold-500/20 transition-all duration-700 flex flex-col justify-center"
-            >
-              <div className="space-y-4">
-                <div className="flex gap-2">
-                   {[1,2,3].map(i => <div key={i} className="w-2 h-2 rounded-full bg-gold-500/30 group-hover:bg-gold-500 transition-colors" style={{ transitionDelay: `${i*100}ms` }} />)}
-                </div>
-                <h3 className="text-2xl font-bold display-font">Cinematic Presence</h3>
-                <p className="text-gray-500 font-light text-sm leading-relaxed">Visual storytelling for high-end destinations.</p>
-              </div>
-              <ArrowRight className="absolute bottom-10 right-10 w-6 h-6 text-white/5 group-hover:text-gold-500 group-hover:translate-x-1 transition-all" />
-            </motion.div>
+            ))}
+            
+            {/* Invisible spacer to 'close' the stack without a button */}
+            <div className="h-[20vh]" />
           </div>
         </div>
       </section>

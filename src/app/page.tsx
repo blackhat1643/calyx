@@ -12,49 +12,48 @@ export default function BookingPage() {
     target: sectionTwoRef,
     offset: ["start start", "end end"]
   });
-  const { scrollYProgress: sectionFiveScroll } = useScroll({
-    target: sectionFiveRef,
-    offset: ["start start", "end end"]
-  });
 
   // Image animations (Starts immediately, ends at 0.5 progress)
   const imageX = useTransform(sectionTwoScroll, [0, 0.5], ["0%", "45%"]);
   const imageScale = useTransform(sectionTwoScroll, [0, 0.5], [1, 0.8]);
   const imageRadius = useTransform(sectionTwoScroll, [0, 0.5], ["0px", "40px"]);
+  const imageRotateY = useTransform(sectionTwoScroll, [0, 0.5], [0, -15]);
+  const imageZ = useTransform(sectionTwoScroll, [0, 0.5], [0, 100]);
+  const imageGrayscale = useTransform(sectionTwoScroll, [0, 0.3], ["100%", "0%"]);
   
   // Text animations
   const textOpacity = useTransform(sectionTwoScroll, [0.2, 0.4], [0, 1]);
-  const textX = useTransform(sectionTwoScroll, [0.2, 0.4], [-40, 0]);
+  const textX = useTransform(sectionTwoScroll, [0.2, 0.4], [-60, 0]);
+  const bgTextY = useTransform(sectionTwoScroll, [0, 1], ["0%", "-20%"]);
+  const bgTextOpacity = useTransform(sectionTwoScroll, [0.1, 0.3, 0.7, 0.9], [0, 0.05, 0.05, 0]);
 
-  // Section 5: Individual Title Scales
-  const scaleTitle1 = useTransform(sectionFiveScroll, [0.1, 0.2], [1, 0.8]);
-  const scaleTitle2 = useTransform(sectionFiveScroll, [0.3, 0.4], [1, 0.8]);
-  const scaleTitle3 = useTransform(sectionFiveScroll, [0.5, 0.6], [1, 0.8]);
-  const scaleTitle4 = useTransform(sectionFiveScroll, [0.7, 0.8], [1, 0.8]);
 
-  const scales = [scaleTitle1, scaleTitle2, scaleTitle3, scaleTitle4];
 
   return (
     <main className="relative bg-black text-white">
       {/* Hero Section */}
       <div className="p-4 md:p-6 lg:p-10 lg:pb-0 min-h-screen">
-        <section className="relative min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] w-full flex items-center justify-start px-6 md:px-16 lg:px-24 py-12 md:py-20 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
-          {/* Video Overlay */}
-          <div className="absolute inset-0 z-0 bg-gray-900">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="h-full w-full object-cover opacity-60"
-            >
-              <source
-                src="/hairdresser-styling-a-young-woman-s-reddishbrown-h-2025-12-17-23-34-49-utc.mov"
-                type="video/mp4"
-              />
-            </video>
-            {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+        <section className="relative min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] w-full flex items-center justify-start px-6 md:px-16 lg:px-24 py-12 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
+          {/* Triple Portrait Video Background */}
+          <div className="absolute inset-0 z-0 bg-gray-900 flex">
+            {[1, 2, 3].map((v) => (
+              <div key={v} className={`flex-1 h-full relative overflow-hidden ${v !== 3 ? 'border-r border-white/5' : ''}`}>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className={`h-full w-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000 ${v === 2 ? 'scale-110' : ''}`}
+                >
+                  <source
+                    src="/MasterOfVolume_OfficialTeaser_18May.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
+            ))}
+            {/* Unified Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-black/80" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
           </div>
 
@@ -65,7 +64,7 @@ export default function BookingPage() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="flex flex-col justify-center space-y-6"
+              className="flex flex-col justify-center space-y-4"
             >
               <div className="space-y-3">
                 <motion.div
@@ -75,16 +74,16 @@ export default function BookingPage() {
                   className="inline-flex items-center px-3 py-1 rounded-full border border-gold-500/30 bg-gold-500/10 text-gold-400 text-[10px] font-bold uppercase tracking-[0.2em]"
                 >
                   <Star className="w-3 h-3 mr-2 fill-gold-400" />
-                  Premium Experience
+                  Exclusive Masterclass
                 </motion.div>
                 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] display-font">
-                  Indulge in <br />
-                  <span className="gold-text">Timeless Luxury</span>
+                <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold leading-[1.1] display-font">
+                  Learn the <br />
+                  <span className="gold-text">Architecture of Volume</span>
                 </h1>
                 
-                <p className="text-base md:text-lg text-gray-400 max-w-sm font-light leading-relaxed">
-                  Experience the ultimate escape in our curated villas. Every detail is designed for your comfort and serenity.
+                <p className="text-sm md:text-base text-gray-400 max-w-lg font-light leading-relaxed">
+                  Join International Hair Artist Konstantin Borchininov (Kostya) for a live, high-impact hairstyling experience designed for professionals who want to elevate their skills. Master the technique that creates hair silhouettes specifically for Indian hair textures.
                 </p>
               </div>
 
@@ -97,51 +96,57 @@ export default function BookingPage() {
               >
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <p className="text-gray-500 text-[10px] uppercase tracking-[0.2em] mb-1 font-bold">Private Villa</p>
-                    <h3 className="text-xl font-bold tracking-tight">Royal Azure Suite</h3>
+                    <p className="text-gray-500 text-[10px] uppercase tracking-[0.2em] mb-1 font-bold">Online Masterclass</p>
+                    <h3 className="text-xl font-bold tracking-tight"> Kostya Masterclass</h3>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold gold-text">$1,299</p>
-                    <p className="text-[9px] text-gray-500 tracking-widest font-bold">PER NIGHT</p>
+                    <p className="text-sm text-gray-500 line-through">₹2999</p>
+                    <p className="text-2xl font-bold gold-text">₹999</p>
                   </div>
                 </div>
 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-2 mb-4">
                   <div className="flex items-center text-xs text-gray-400 font-light">
                     <div className="w-4 h-4 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
                       <Check className="w-2.5 h-2.5 text-gold-400" />
                     </div>
-                    <span>All-inclusive breakfast and spa</span>
+                    <span>Techniques for Indian hair textures</span>
                   </div>
                   <div className="flex items-center text-xs text-gray-400 font-light">
                     <div className="w-4 h-4 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
                       <Check className="w-2.5 h-2.5 text-gold-400" />
                     </div>
-                    <span>Complimentary airport transfer</span>
+                    <span>Live Q&A session with Kostya</span>
+                  </div>
+                  <div className="flex items-center text-xs text-gray-400 font-light">
+                    <div className="w-4 h-4 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
+                      <Check className="w-2.5 h-2.5 text-gold-400" />
+                    </div>
+                    <span>High-Tea & Dinner included</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="border border-white/5 rounded-xl p-3 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Check In</p>
+                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Class Date</p>
                     <div className="flex items-center text-xs font-medium">
                       <Calendar className="w-3.5 h-3.5 mr-2 text-gold-400" />
-                      <span>Select Date</span>
+                      <span>18 May, 2026</span>
                     </div>
                   </div>
                   <div className="border border-white/5 rounded-xl p-3 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Guests</p>
+                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Duration</p>
                     <div className="flex items-center text-xs font-medium">
                       <Users className="w-3.5 h-3.5 mr-2 text-gold-400" />
-                      <span>2 Persons</span>
+                      <span>4 Hours Live</span>
                     </div>
                   </div>
                 </div>
 
-                <button className="w-full py-4 rounded-xl gold-gradient text-black text-sm font-bold flex items-center justify-center group/btn relative overflow-hidden transition-all duration-300 active:scale-[0.98] shadow-lg shadow-gold-900/20">
+                <button className="w-full py-3.5 rounded-xl gold-gradient text-black text-sm font-bold flex items-center justify-center group/btn relative overflow-hidden transition-all duration-300 active:scale-[0.98] shadow-lg shadow-gold-900/20">
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 flex items-center tracking-tight">
-                    Book Reservation <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
+                    Join Masterclass <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
                   </span>
                 </button>
 
@@ -160,8 +165,8 @@ export default function BookingPage() {
                  className="text-right"
                >
                   <div className="h-0.5 w-10 bg-gold-500 ml-auto mb-4" />
-                  <p className="text-6xl font-black text-white/[0.03] uppercase select-none leading-none mb-1">Paradise</p>
-                  <p className="text-lg font-light text-gray-600 tracking-[0.3em] uppercase">Refined living</p>
+                  <p className="text-6xl font-black text-white/[0.03] uppercase select-none leading-none mb-1">Artistry</p>
+                  <p className="text-lg font-light text-gray-600 tracking-[0.3em] uppercase">Master the craft</p>
                </motion.div>
             </div>
           </div>
@@ -175,28 +180,28 @@ export default function BookingPage() {
             {
               num: "01",
               title: "Start Time",
-              detail: "09:00 PM EST",
+              detail: "03:00 PM IST",
               color: "gold",
               icon: <div className="w-2.5 h-2.5 rounded-full bg-gold-500 animate-pulse" />
             },
             {
               num: "02",
-              title: "YouTube",
-              detail: "Global Live",
-              color: "red",
-              icon: <svg className="w-7 h-7 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z"/></svg>
+              title: "Duration",
+              detail: "4 Hours Live",
+              color: "gold",
+              icon: <Star className="w-6 h-6 text-gold-500/50" />
             },
             {
               num: "03",
-              title: "Ceremony",
-              detail: "April 25, 2026",
+              title: "Location",
+              detail: "Mumbai, India",
               color: "gold",
               icon: <Calendar className="w-6 h-6 text-gold-500/50" />
             },
             {
               num: "04",
-              title: "Language",
-              detail: "EN & ES",
+              title: "Date",
+              detail: "18 May, 2026",
               color: "gold",
               icon: <Users className="w-6 h-6 text-gold-500/50" />
             }
@@ -235,8 +240,18 @@ export default function BookingPage() {
       </section>
 
       {/* Third Section: Scroll-driven Transition (Moved) */}
-      <section ref={sectionTwoRef} className="relative h-[200vh] bg-black">
+      <section ref={sectionTwoRef} className="relative h-[200vh] bg-black" style={{ perspective: "1000px" }}>
         <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+          {/* Parallax Background Text */}
+          <motion.div 
+            style={{ y: bgTextY, opacity: bgTextOpacity }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            <h2 className="text-[20vw] font-black uppercase leading-none text-white whitespace-nowrap">
+              Master Artist
+            </h2>
+          </motion.div>
+
           {/* Content (Title & Description) - Left Side */}
           <div className="absolute inset-0 flex items-center px-12 md:px-24">
             <motion.div 
@@ -244,21 +259,29 @@ export default function BookingPage() {
               className="max-w-xl space-y-6"
             >
               <h2 className="text-4xl md:text-6xl font-bold leading-tight display-font">
-                Crafted for <br />
-                <span className="gold-text">Soulful Moments</span>
+                The Master of <br />
+                <span className="gold-text">Silhouettes</span>
               </h2>
               <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
-                Step into a world where architecture meets the horizon. Every villa is a masterpiece of design, offering an unparalleled connection to the natural wonders that surround you.
+                Konstantin Borchininov is a globally recognized artist celebrated for his iconic volume curls, open hair styling, and glamorous setting techniques. Known for his Precision, Technique, and Transformation. Kostya is partnering with Calyx Professional to decode the geometry behind elite, long-lasting volume for the Indian professional community.
               </p>
               <div className="flex gap-8 items-center pt-4">
-                <div className="flex flex-col">
-                  <span className="text-3xl font-bold gold-text">100%</span>
-                  <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Privacy</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-3xl font-bold gold-text">24/7</span>
-                  <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Concierge</span>
-                </div>
+                {[
+                  { label: "Precision", val: "100%" },
+                  { label: "Artistry", val: "Global" }
+                ].map((stat, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + (i * 0.1) }}
+                    className="flex flex-col"
+                  >
+                    <span className="text-3xl font-bold gold-text">{stat.val}</span>
+                    <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">{stat.label}</span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -268,12 +291,15 @@ export default function BookingPage() {
             style={{ 
               x: imageX, 
               scale: imageScale,
-              borderRadius: imageRadius
+              borderRadius: imageRadius,
+              rotateY: imageRotateY,
+              z: imageZ,
+              filter: `grayscale(${imageGrayscale})`
             }}
             className="relative z-10 w-[80%] md:w-[60%] lg:w-[45%] h-[60vh] md:h-[70vh] overflow-hidden shadow-2xl"
           >
             <img 
-              src="/calyx.JPG" 
+              src="/IMG_0217.JPG" 
               alt="Calyx Luxury" 
               className="w-full h-full object-cover"
             />
@@ -305,15 +331,15 @@ export default function BookingPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-8">
-                <p className="text-gold-400 font-bold tracking-[0.4em] uppercase text-xs mb-2">Request Access</p>
-                <h2 className="text-4xl font-bold display-font">Join the Calyx Legacy</h2>
+                <p className="text-gold-400 font-bold tracking-[0.4em] uppercase text-xs mb-2">Reserve Your Spot</p>
+                <h2 className="text-4xl font-bold display-font">Secure Your Seat</h2>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold gold-text">An Exclusive Experience Awaits</h3>
+              <h3 className="text-2xl font-bold gold-text">A Career-Defining Experience</h3>
               <p className="text-gray-400 font-light text-lg leading-relaxed max-w-md">
-                Registration provides priority access to our private villa collections and personalized concierge services across the globe.
+                Register now to master the architecture of volume and receive your e-certificate signed by international artist Kostya.
               </p>
             </div>
           </motion.div>
@@ -370,13 +396,13 @@ export default function BookingPage() {
 
               {/* Preferences */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Preferred Destination</label>
+                <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Experience Level</label>
                 <select className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold-500/50 transition-colors text-gray-400 font-light appearance-none">
-                  <option>Select Destination</option>
-                  <option>Maldives - Private Islands</option>
-                  <option>Bali - Jungle Sanctuary</option>
-                  <option>Swiss Alps - Luxury Chalet</option>
-                  <option>Amalfi Coast - Villa Azure</option>
+                  <option>Select Your Experience</option>
+                  <option>Professional Hair Stylist</option>
+                  <option>Salon Owner</option>
+                  <option>Freelance Artist</option>
+                  <option>Student / Aspiring Professional</option>
                 </select>
               </div>
 
@@ -400,8 +426,8 @@ export default function BookingPage() {
         </div>
       </section>
 
-      {/* Fifth Section: What You'll Learn (Sticky Stacking Edition) */}
-      <section ref={sectionFiveRef} className="relative pt-32 pb-32 px-6 md:px-24 bg-[#030303] min-h-[150vh]">
+      {/* Fifth Section: Why You Should Not Miss It (Standard Vertical Layout) */}
+      <section ref={sectionFiveRef} className="relative pt-24 pb-24 px-6 md:px-24 bg-[#030303]">
         <div className="max-w-6xl mx-auto space-y-0">
           <div className="mb-20 text-center space-y-4">
              <motion.span 
@@ -409,95 +435,123 @@ export default function BookingPage() {
                whileInView={{ opacity: 1 }}
                className="text-gold-500 font-bold uppercase tracking-[0.5em] text-[10px]"
              >
-               Curriculum for the Elite
+               The Ultimate Experience
              </motion.span>
-             <h2 className="text-5xl md:text-7xl font-bold display-font">What You&apos;ll Master</h2>
+             <h2 className="text-5xl md:text-7xl font-bold display-font">Why You Should Not Miss It</h2>
           </div>
 
-          <div className="flex flex-col space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 num: "01",
-                title: "Elite Networking Protocols",
-                desc: "Master the unspoken language of the global high-net-worth elite. From private club etiquette to establishing high-trust cross-border alliances.",
-                icon: <Users className="w-8 h-8 text-gold-500" />,
-                bg: "from-gold-500/10 via-[#0a0a0a] to-[#050505]",
-                accent: "gold"
+                title: "Live Demonstration",
+                desc: "Witness the creation of 3 exclusive hair silhouette techniques live on stage. Kostya reveals the signature volume mastering.",
+                icon: <Star className="w-8 h-8 text-gold-500" />,
+                accent: "gold",
+                isGold: true
               },
               {
                 num: "02",
-                title: "Luxury Market Mastering",
-                desc: "Analyze the 2026 architectural and rental trends defining the premium villa landscape across Europe and Asia with specialized yield mechanics.",
-                icon: <Star className="w-8 h-8 text-red-500" />,
-                bg: "from-red-500/10 via-[#0c0c0c] to-[#050505]",
+                title: "Technique Breakdown",
+                desc: "An intensive step-by-step breakdown of professional setting and styling geometry. Decode elite volume science.",
+                icon: <Shield className="w-8 h-8 text-red-500" />,
                 accent: "red"
               },
               {
                 num: "03",
-                title: "Portfolio Strategy",
-                desc: "Discover how to diversify global assets through high-yield luxury real estate and exclusive property management for non-traditional wealth.",
-                icon: <Shield className="w-8 h-8 text-gold-500" />,
-                bg: "from-blue-500/5 via-[#0e0e0e] to-[#050505]",
-                accent: "gold"
+                title: "Interactive Q&A",
+                desc: "Engage directly with Kostya in an open dialogue. Get technical questions answered by a world-renowned hair artist.",
+                icon: <Users className="w-8 h-8 text-gold-500" />,
+                accent: "gold",
+                isGold: true
               },
               {
                 num: "04",
-                title: "Cinematic Presence",
-                desc: "Understand the art of visual storytelling used to market the world's most prestigious event destinations and ultra-luxe properties.",
+                title: "Elite Networking",
+                desc: "Connect with top industry professionals and leaders. Expand your circle within the niche Indian artistry community.",
                 icon: <Calendar className="w-8 h-8 text-gold-500" />,
-                bg: "from-purple-500/10 via-[#101010] to-[#050505]",
+                accent: "gold"
+              },
+              {
+                num: "05",
+                title: "Official Certificate",
+                desc: "Receive an official completion certificate signed by Kostya. Validate your expertise in Volume techniques.",
+                icon: <Check className="w-8 h-8 text-gold-500" />,
+                accent: "gold",
+                isGold: true
+              },
+              {
+                num: "CTA",
+                title: "Join the Elite",
+                desc: "Secure your place in the most anticipated hair masterclass of 2026. Limited physical seats available in Mumbai.",
+                icon: <ArrowRight className="w-8 h-8 text-white" />,
                 accent: "gold"
               }
             ].map((box, i) => (
-              <div 
-                key={i} 
-                className="sticky h-auto flex flex-col justify-start"
-                style={{ top: `${100 + (i * 80)}px`, zIndex: i + 10 }}
-              >
+              <div key={i} className="relative group h-full">
                 <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  className={`group relative p-10 md:p-12 md:pt-0 md:pb-16 rounded-[4rem] bg-gradient-to-br ${box.bg} backdrop-blur-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden min-h-[350px] flex items-start transition-all duration-700 hover:border-${box.accent}-500/40`}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  className={`relative p-7 md:p-9 rounded-[2.2rem] overflow-hidden transition-all duration-700 shadow-2xl h-full flex flex-col ${
+                    box.isGold
+                    ? 'gold-gradient text-black border-none'
+                    : 'bg-gradient-to-br from-white/[0.08] via-white/[0.04] to-transparent backdrop-blur-3xl border border-white/10 text-white hover:border-white/20'
+                  }`}
                 >
-                  {/* Dynamic Glow Mesh */}
-                  <div className={`absolute top-0 right-0 w-96 h-96 bg-${box.accent}-500/5 blur-[120px] rounded-full group-hover:bg-${box.accent}-500/10 transition-colors duration-700`} />
-                  
-                  {/* Tempered Background Number */}
-                  <div className="absolute top-0 left-0 w-full h-full flex items-start justify-start pointer-events-none p-10">
-                    <span className="text-[200px] md:text-[280px] font-black text-white/[0.02] group-hover:text-white/[0.04] leading-none -translate-x-12 -translate-y-12 select-none uppercase transition-all duration-1000">
-                      {box.num}
-                    </span>
-                  </div>
+                  {/* Background Accents */}
+                  {box.isGold ? (
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-[40px] rounded-full -translate-x-1/2 -translate-y-1/2" />
+                  ) : (
+                    <>
+                      <div className={`absolute top-0 right-0 w-24 h-24 bg-${box.accent}-500/10 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
+                      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-gold-500/40 to-transparent scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+                    </>
+                  )}
 
-                  <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full pt-12 md:pt-16">
-                    <div className="md:col-span-8 space-y-6">
-                       <motion.h3 
-                         style={{ scale: scales[i], originX: 0 }}
-                         className="text-3xl md:text-5xl font-bold display-font tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-500 transition-all"
-                       >
-                         {box.title}
-                       </motion.h3>
-                       <p className="text-xl text-gray-400 font-light leading-relaxed max-w-2xl group-hover:text-gray-300 transition-colors">
+                  <div className="relative z-10 flex flex-col gap-6 items-start h-full">
+                    {/* Number & Accent Column */}
+                    <div className="flex flex-col items-start space-y-2">
+                       <span className={`text-3xl md:text-4xl font-display font-light ${box.isGold ? 'text-black/20' : 'text-white/10 group-hover:text-gold-500/40'} transition-colors duration-700`}>
+                         {box.num}
+                       </span>
+                       <div className={`w-8 h-px ${box.isGold ? 'bg-black/20' : 'bg-white/10 group-hover:w-16 group-hover:bg-gold-500'} transition-all duration-700`} />
+                    </div>
+
+                    {/* Content Column */}
+                    <div className="flex-1 space-y-3">
+                       <div className="flex items-center space-y-0 gap-3">
+                          {!box.isGold && <div className={`w-1.5 h-1.5 rounded-full bg-${box.accent === 'red' ? 'red-500' : 'gold-500'} animate-pulse`} />}
+                          <h3 className={`text-xl md:text-2xl font-bold display-font tracking-tight transition-all ${box.isGold ? 'text-black' : 'text-white group-hover:gold-text'}`}>
+                             {box.title}
+                          </h3>
+                       </div>
+                       <p className={`text-sm md:text-base font-medium leading-relaxed transition-colors duration-500 ${box.isGold ? 'text-black/70' : 'text-gray-400 group-hover:text-gray-200'}`}>
                          {box.desc}
                        </p>
                     </div>
-                    <div className="md:col-span-4 flex justify-end">
-                       <div className="relative w-32 h-32 md:w-56 md:h-56 rounded-full bg-white/[0.03] flex items-center justify-center border border-white/10 group-hover:scale-105 group-hover:bg-gold-500/5 transition-all duration-700 overflow-hidden shadow-2xl">
-                          {/* Inner Glow */}
-                          <div className={`absolute inset-0 bg-gradient-to-tr from-${box.accent}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity`} />
-                          {React.cloneElement(box.icon as React.ReactElement<any>, { 
-                            className: `w-16 h-16 md:w-28 md:h-28 relative z-10 transition-transform duration-700 group-hover:rotate-12 ${box.accent === 'red' ? 'text-red-500' : 'text-gold-500'}` 
-                          })}
-                       </div>
+
+                    {/* Decorative Geometric Element */}
+                    <div className="mt-auto pt-4 flex justify-between items-center w-full">
+                        <span className={`text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full ${box.isGold ? 'bg-black/5 text-black' : 'bg-white/5 text-white/40'}`}>
+                          {box.num === 'CTA' ? 'Enroll Now' : 'Technique'}
+                        </span>
+                        <div className={`relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-700 group-hover:scale-110 ${
+                          box.isGold ? 'bg-black text-gold-500 ring-4 ring-black/5' : 'bg-white/5 text-white/20 border border-white/5 group-hover:border-gold-500/40'
+                        }`}>
+                           {box.icon && React.cloneElement(box.icon as React.ReactElement<any>, { 
+                             className: `w-4 h-4 transition-all duration-700 group-hover:translate-x-1 ${box.isGold ? 'text-gold-400' : 'text-white/40 group-hover:text-gold-500'}` 
+                           })}
+                        </div>
                     </div>
                   </div>
                 </motion.div>
               </div>
             ))}
             
-            {/* Invisible spacer to 'close' the stack without a button */}
-            <div className="h-[20vh]" />
+            {/* Minimal footer spacer */}
+            <div className="h-0" />
           </div>
         </div>
       </section>
@@ -508,7 +562,7 @@ export default function BookingPage() {
           <div className="md:col-span-2 space-y-6">
             <h2 className="text-3xl font-bold display-font tracking-tighter">CALYX<span className="text-gold-500">.</span></h2>
             <p className="text-gray-500 max-w-sm font-light leading-relaxed">
-              Curating the world&apos;s most exclusive villa experiences for those who settle for nothing less than extraordinary.
+              Empowering the next generation of hair professionals through elite technique and global artistry.
             </p>
             <div className="flex gap-4">
               {['Instagram', 'LinkedIn', 'Twitter'].map(social => (

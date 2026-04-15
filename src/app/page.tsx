@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Calendar, Users, Star, ArrowRight, Shield, Check } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Calendar, Users, Star, ArrowRight, Shield, Check, ChevronDown } from "lucide-react";
 
 export default function BookingPage() {
   // Second section scroll animations
@@ -27,7 +27,39 @@ export default function BookingPage() {
   const bgTextY = useTransform(sectionTwoScroll, [0, 1], ["0%", "-20%"]);
   const bgTextOpacity = useTransform(sectionTwoScroll, [0.1, 0.3, 0.7, 0.9], [0, 0.05, 0.05, 0]);
 
+  // FAQ State
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
+  const faqs = [
+    {
+      q: "Can I attend if I am not in Mumbai?",
+      a: "Yes! You can join the exclusive Global Webinar from anywhere."
+    },
+    {
+      q: "What is the event about?",
+      a: "A high-impact masterclass where international artist Kostya decodes the Architecture of Volume. You’ll learn 3 exclusive Volume techniques to master silhouettes and elevate your Skills."
+    },
+    {
+      q: "Who should attend the event?",
+      a: "Professional hairstylists and salon owners looking to master international standards. It’s for those who want to move beyond basic styling to high-end technical artistry."
+    },
+    {
+      q: "What will I learn?",
+      a: "You’ll master 3 signature volume techniques, advanced sectioning, and tool handling. The focus is on creating gravity-defying, long-lasting silhouettes for Indian hair."
+    },
+    {
+      q: "Where is the event?",
+      a: "The live seminar is in Mumbai (Venue TBA), or you can join via the Global Webinar. It’s designed to be accessible whether you are in the city or tuning in remotely."
+    },
+    {
+      q: "What is the duration?",
+      a: "A high-intensity 4-hour session from 3:00 PM to 7:00 PM. It includes a live demo, technical breakdown, and a networking session."
+    },
+    {
+      q: "Will I get a certificate?",
+      a: "Yes, all participants receive an official e-certificate signed by Kostya. It’s a prestigious credential to showcase your international training to clients."
+    }
+  ];
 
   return (
     <main className="relative bg-black text-white">
@@ -96,61 +128,75 @@ export default function BookingPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="glass-card p-6 md:p-7 rounded-[1.5rem] max-w-[380px] group hover:border-gold-500/40 transition-all duration-700"
+                className="glass-card p-5 md:p-6 rounded-[1.5rem] max-w-[420px] group hover:border-gold-500/40 transition-all duration-700 w-full"
               >
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <p className="text-gray-500 text-[10px] uppercase tracking-[0.2em] mb-1 font-bold">Online Masterclass</p>
-                    <h3 className="text-xl font-bold tracking-tight"> Kostya Masterclass</h3>
+                {/* Event 1: Exclusive Seminar */}
+                <div className="mb-4 pb-4 border-b border-white/10">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <p className="text-gray-500 text-[10px] uppercase tracking-[0.2em] mb-1 font-bold">Physical Event</p>
+                      <h3 className="text-xl font-bold tracking-tight text-white">Exclusive Seminar</h3>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-500 line-through">₹2999</p>
-                    <p className="text-2xl font-bold gold-text">₹999</p>
+                  
+                  <div className="space-y-1.5 mb-3">
+                    <div className="flex items-center text-xs text-gray-400 font-light">
+                      <div className="w-3.5 h-3.5 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
+                        <Calendar className="w-2 h-2 text-gold-400" />
+                      </div>
+                      <span>Location: Mumbai</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-400 font-light">
+                      <div className="w-3.5 h-3.5 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
+                        <Users className="w-2 h-2 text-gold-400" />
+                      </div>
+                      <span>Venue: TBA</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-400 font-light">
+                      <div className="w-3.5 h-3.5 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
+                        <Star className="w-2 h-2 text-gold-400" />
+                      </div>
+                      <span>Inclusions: High-Tea & Dinner</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 mb-1">
+                    <p className="text-[9px] text-gray-500 uppercase tracking-widest font-bold mb-1.5">Price Tiers</p>
+                    <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
+                      <div className="border border-white/5 rounded-lg p-2 bg-white/[0.02]">
+                        <p className="text-gray-400 mb-1">Platinum</p>
+                        <p className="font-bold gold-text text-sm">₹9,999</p>
+                      </div>
+                      <div className="border border-white/5 rounded-lg p-2 bg-white/[0.02]">
+                        <p className="text-gray-400 mb-1">Gold</p>
+                        <p className="font-bold text-white text-sm">₹7,499</p>
+                      </div>
+                      <div className="border border-white/5 rounded-lg p-2 bg-white/[0.02]">
+                        <p className="text-gray-400 mb-1">Silver</p>
+                        <p className="font-bold text-gray-300 text-sm">₹4,999</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-xs text-gray-400 font-light">
-                    <div className="w-4 h-4 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
-                      <Check className="w-2.5 h-2.5 text-gold-400" />
+                {/* Event 2: Global Webinar */}
+                <div className="mb-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-500 text-[9px] uppercase tracking-[0.2em] mb-0.5 font-bold">Online Masterclass</p>
+                      <h3 className="text-base font-bold tracking-tight text-white">Global Webinar</h3>
                     </div>
-                    <span>Techniques for Indian hair textures</span>
-                  </div>
-                  <div className="flex items-center text-xs text-gray-400 font-light">
-                    <div className="w-4 h-4 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
-                      <Check className="w-2.5 h-2.5 text-gold-400" />
-                    </div>
-                    <span>Live Q&A session with Kostya</span>
-                  </div>
-                  <div className="flex items-center text-xs text-gray-400 font-light">
-                    <div className="w-4 h-4 rounded-full bg-gold-500/10 flex items-center justify-center mr-3 border border-gold-500/20">
-                      <Check className="w-2.5 h-2.5 text-gold-400" />
-                    </div>
-                    <span>High-Tea & Dinner included</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="border border-white/5 rounded-xl p-3 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Class Date</p>
-                    <div className="flex items-center text-xs font-medium">
-                      <Calendar className="w-3.5 h-3.5 mr-2 text-gold-400" />
-                      <span>18 May, 2026</span>
-                    </div>
-                  </div>
-                  <div className="border border-white/5 rounded-xl p-3 bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                    <p className="text-[9px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Duration</p>
-                    <div className="flex items-center text-xs font-medium">
-                      <Users className="w-3.5 h-3.5 mr-2 text-gold-400" />
-                      <span>4 Hours Live</span>
+                    <div className="text-right">
+                      <p className="text-[10px] text-gray-500 line-through">₹2999</p>
+                      <p className="text-lg font-bold gold-text">₹999</p>
                     </div>
                   </div>
                 </div>
 
-                <button className="w-full py-3.5 rounded-xl gold-gradient text-black text-sm font-bold flex items-center justify-center group/btn relative overflow-hidden transition-all duration-300 active:scale-[0.98] shadow-lg shadow-gold-900/20">
+                <button className="w-full py-3 rounded-xl gold-gradient text-black text-sm font-bold flex items-center justify-center group/btn relative overflow-hidden transition-all duration-300 active:scale-[0.98] shadow-lg shadow-gold-900/20">
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 flex items-center tracking-tight">
-                    Join Masterclass <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
+                    Reserve Your Spot <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
                   </span>
                 </button>
 
@@ -440,6 +486,65 @@ export default function BookingPage() {
             
             {/* Minimal footer spacer */}
             <div className="h-0" />
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="relative py-24 px-6 md:px-24 bg-black border-t border-white/5 overflow-hidden">
+        {/* Glow effect */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gold-500/5 blur-[150px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto relative z-10">
+          <div className="text-center mb-16 space-y-4">
+             <motion.span 
+               initial={{ opacity: 0 }}
+               whileInView={{ opacity: 1 }}
+               viewport={{ once: true }}
+               className="text-gold-500 font-bold uppercase tracking-[0.5em] text-[10px]"
+             >
+               Need to know
+             </motion.span>
+             <h2 className="text-4xl md:text-6xl font-bold display-font">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                className={`border rounded-2xl transition-colors duration-500 overflow-hidden ${openFaqIndex === idx ? 'bg-white/[0.04] border-gold-500/30' : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.03] hover:border-white/10'}`}
+              >
+                <button 
+                  onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                  className="w-full text-left px-6 py-6 md:px-8 flex justify-between items-center group focus:outline-none"
+                >
+                  <span className={`text-sm md:text-base font-bold pr-8 transition-colors ${openFaqIndex === idx ? 'gold-text' : 'text-gray-300 group-hover:text-white'}`}>
+                    {faq.q}
+                  </span>
+                  <div className={`w-8 h-8 rounded-full border flex flex-shrink-0 items-center justify-center transition-all ${openFaqIndex === idx ? 'border-gold-500/50 bg-gold-500/10' : 'border-white/10 bg-black/50 group-hover:border-white/20'}`}>
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-500 ${openFaqIndex === idx ? 'text-gold-400 rotate-180' : 'text-gray-500 group-hover:text-white'}`} />
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {openFaqIndex === idx && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                    >
+                      <div className="px-6 md:px-8 pb-8 pt-2 text-gray-400 font-light text-sm leading-relaxed max-w-3xl">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

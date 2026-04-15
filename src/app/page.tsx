@@ -36,17 +36,21 @@ export default function BookingPage() {
         <section className="relative min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] w-full flex items-center justify-start px-6 md:px-16 lg:px-24 py-12 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
           {/* Triple Portrait Video Background */}
           <div className="absolute inset-0 z-0 bg-gray-900 flex">
-            {[1, 2, 3].map((v) => (
-              <div key={v} className={`flex-1 h-full relative overflow-hidden ${v !== 3 ? 'border-r border-white/5' : ''}`}>
+            {[
+              { id: 1, src: "/Когда детские пушистые волосы превращаются в идеальную укладку — это всегда маленькое вау ✨Покаж.mp4" },
+              { id: 2, src: "/MasterOfVolume_OfficialTeaser_18May.mp4" },
+              { id: 3, src: "/SaveVid.Net_AQPv23M0qx_2oXwVm0sRn_SQxvuehOUfyLmTfPyDbztkCk1F3tmhGk4BOcvSLqEMm-W4TAC-qCVStfRZxgGhBaRGz0E_nSJ9Erz5_Og.mp4" }
+            ].map((video, idx) => (
+              <div key={video.id} className={`flex-1 h-full relative overflow-hidden ${idx !== 2 ? 'border-r border-white/5' : ''}`}>
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className={`h-full w-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000 ${v === 2 ? 'scale-110' : ''}`}
+                  className={`h-full w-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000 ${idx === 1 ? 'scale-110' : ''}`}
                 >
                   <source
-                    src="/MasterOfVolume_OfficialTeaser_18May.mp4"
+                    src={video.src}
                     type="video/mp4"
                   />
                 </video>
@@ -309,122 +313,6 @@ export default function BookingPage() {
         </div>
       </section>
 
-      {/* Fourth Section: Registration Form */}
-      <section className="relative py-10 px-6 md:px-24 bg-[#050505] overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gold-500/5 blur-[160px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Side: Visual & Text */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl relative group">
-              <img 
-                src="/luxury_membership_key_1776167189694.png" 
-                alt="Membership Invite" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-8 left-8">
-                <p className="text-gold-400 font-bold tracking-[0.4em] uppercase text-xs mb-2">Reserve Your Spot</p>
-                <h2 className="text-4xl font-bold display-font">Secure Your Seat</h2>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold gold-text">A Career-Defining Experience</h3>
-              <p className="text-gray-400 font-light text-lg leading-relaxed max-w-md">
-                Register now to master the architecture of volume and receive your e-certificate signed by international artist Kostya.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Right Side: Form */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="glass-card p-8 md:p-12 rounded-[3rem] border border-white/5 shadow-2xl"
-          >
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* First Name */}
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">First Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="John" 
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold-500/50 transition-colors text-white font-light placeholder:text-gray-700" 
-                  />
-                </div>
-                {/* Last Name */}
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Last Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="Doe" 
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold-500/50 transition-colors text-white font-light placeholder:text-gray-700" 
-                  />
-                </div>
-              </div>
-
-              {/* Email Address */}
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Email Address</label>
-                <input 
-                  type="email" 
-                  placeholder="john@example.com" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold-500/50 transition-colors text-white font-light placeholder:text-gray-700" 
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Phone Number</label>
-                <input 
-                  type="tel" 
-                  placeholder="+1 (555) 000-0000" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold-500/50 transition-colors text-white font-light placeholder:text-gray-700" 
-                />
-              </div>
-
-              {/* Preferences */}
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold ml-1">Experience Level</label>
-                <select className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-gold-500/50 transition-colors text-gray-400 font-light appearance-none">
-                  <option>Select Your Experience</option>
-                  <option>Professional Hair Stylist</option>
-                  <option>Salon Owner</option>
-                  <option>Freelance Artist</option>
-                  <option>Student / Aspiring Professional</option>
-                </select>
-              </div>
-
-              <div className="pt-4">
-                <button 
-                  type="button"
-                  className="w-full py-5 rounded-2xl gold-gradient text-black font-bold flex items-center justify-center group/submit relative overflow-hidden transition-all duration-300 active:scale-[0.98] shadow-lg shadow-gold-500/20"
-                >
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/submit:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10 flex items-center tracking-tight">
-                    Submit Registration <ArrowRight className="ml-2 w-5 h-5 group-hover/submit:translate-x-1 transition-transform" />
-                  </span>
-                </button>
-              </div>
-
-              <p className="text-[10px] text-gray-600 text-center uppercase tracking-widest font-bold">
-                🔒 Secure SSL Encryption • Confidentiality Guaranteed
-              </p>
-            </form>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Fifth Section: Why You Should Not Miss It (Standard Vertical Layout) */}
       <section ref={sectionFiveRef} className="relative pt-24 pb-24 px-6 md:px-24 bg-[#030303]">

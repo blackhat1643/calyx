@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Calendar, Users, Star, ArrowRight, Shield, Check, ChevronDown } from "lucide-react";
 
@@ -8,6 +8,15 @@ export default function BookingPage() {
   // Second section scroll animations
   const sectionTwoRef = useRef(null);
   const sectionFiveRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const { scrollYProgress: sectionTwoScroll } = useScroll({
     target: sectionTwoRef,
     offset: ["start start", "end end"]
@@ -97,14 +106,14 @@ export default function BookingPage() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-7xl mx-auto">
             {/* Left Side: Content & Price Box */}
             <motion.div 
-              initial={{ opacity: 0, x: -50 }}
+              initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="flex flex-col justify-center space-y-4"
             >
               <div className="space-y-3">
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                   className="inline-flex items-center px-3 py-1 rounded-full border border-gold-500/30 bg-gold-500/10 text-gold-400 text-[10px] font-bold uppercase tracking-[0.2em]"
@@ -125,7 +134,7 @@ export default function BookingPage() {
 
               {/* Price Box */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
                 className="glass-card p-5 md:p-6 rounded-[1.5rem] max-w-[420px] group hover:border-gold-500/40 transition-all duration-700 w-full"
@@ -258,7 +267,7 @@ export default function BookingPage() {
           ].map((item, i) => (
             <motion.div 
               key={i}
-              initial={{ opacity: 0, y: 10 }}
+              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: i * 0.1 }}
@@ -266,7 +275,7 @@ export default function BookingPage() {
             >
               {/* Tempered Background Number */}
               <div className="absolute inset-0 flex items-start justify-start pointer-events-none select-none overflow-hidden">
-                <span className="text-[120px] font-black text-white/5 transition-colors group-hover:text-white/[0.08] duration-700 leading-none -translate-x-6 -translate-y-4">
+                <span className="text-[120px] font-black text-white/10 transition-colors group-hover:text-white/20 duration-700 leading-none -translate-x-6 -translate-y-4">
                   {item.num}
                 </span>
               </div>
@@ -290,12 +299,12 @@ export default function BookingPage() {
       </section>
 
       {/* Third Section: Scroll-driven Transition (Moved) */}
-      <section ref={sectionTwoRef} className="relative h-[200vh] bg-black" style={{ perspective: "1000px" }}>
-        <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+      <section ref={sectionTwoRef} className="relative h-auto md:h-[200vh] bg-black" style={{ perspective: "1000px" }}>
+        <div className="relative md:sticky top-0 h-auto md:h-screen w-full flex flex-col-reverse md:flex-row items-center justify-center overflow-hidden py-12 md:py-0">
           {/* Parallax Background Text */}
           <motion.div 
-            style={{ y: bgTextY, opacity: bgTextOpacity }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            style={isMobile ? { opacity: 0.05, y: 0 } : { y: bgTextY, opacity: bgTextOpacity }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
           >
             <h2 className="text-[20vw] font-black uppercase leading-none text-white whitespace-nowrap">
               Master Artist
@@ -303,10 +312,10 @@ export default function BookingPage() {
           </motion.div>
 
           {/* Content (Title & Description) - Left Side */}
-          <div className="absolute inset-0 flex items-center px-12 md:px-24">
+          <div className="relative md:absolute md:inset-0 flex items-center px-6 md:px-12 lg:px-24 pt-12 md:pt-0 mt-12 md:mt-0 z-20">
             <motion.div 
-              style={{ opacity: textOpacity, x: textX }}
-              className="max-w-xl space-y-6"
+              style={isMobile ? { opacity: 1, x: 0 } : { opacity: textOpacity, x: textX }}
+              className="max-w-xl space-y-6 text-center md:text-left mx-auto md:mx-0"
             >
               <h2 className="text-4xl md:text-6xl font-bold leading-tight display-font">
                 The Master of <br />
@@ -315,18 +324,18 @@ export default function BookingPage() {
               <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
                 Konstantin Borchininov is a globally recognized artist celebrated for his iconic volume curls, open hair styling, and glamorous setting techniques. Known for his Precision, Technique, and Transformation. Kostya is partnering with Calyx Professional to decode the geometry behind elite, long-lasting volume for the Indian professional community.
               </p>
-              <div className="flex gap-8 items-center pt-4">
+              <div className="flex gap-8 items-center justify-center md:justify-start pt-4">
                 {[
                   { label: "Precision", val: "100%" },
                   { label: "Artistry", val: "Global" }
                 ].map((stat, i) => (
                   <motion.div 
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.5 + (i * 0.1) }}
-                    className="flex flex-col"
+                    transition={{ delay: isMobile ? 0 : 0.5 + (i * 0.1) }}
+                    className="flex flex-col items-center md:items-start"
                   >
                     <span className="text-3xl font-bold gold-text">{stat.val}</span>
                     <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">{stat.label}</span>
@@ -338,7 +347,7 @@ export default function BookingPage() {
 
           {/* Image - Animates from Middle to Right */}
           <motion.div 
-            style={{ 
+            style={isMobile ? { borderRadius: "24px" } : { 
               x: imageX, 
               scale: imageScale,
               borderRadius: imageRadius,
@@ -346,12 +355,12 @@ export default function BookingPage() {
               z: imageZ,
               filter: `grayscale(${imageGrayscale})`
             }}
-            className="relative z-10 w-[80%] md:w-[60%] lg:w-[45%] h-[60vh] md:h-[70vh] overflow-hidden shadow-2xl"
+            className="relative z-10 w-full max-w-[90%] md:w-[60%] lg:w-[45%] h-[65vh] md:h-[70vh] overflow-hidden shadow-2xl mx-auto md:mx-0"
           >
             <img 
               src="/IMG_0217.JPG" 
               alt="Calyx Luxury" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center scale-100"
             />
             {/* Subtle Overlay on image */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -361,11 +370,11 @@ export default function BookingPage() {
 
 
       {/* Fifth Section: Why You Should Not Miss It (Standard Vertical Layout) */}
-      <section ref={sectionFiveRef} className="relative pt-24 pb-24 px-6 md:px-24 bg-[#030303]">
+      <section ref={sectionFiveRef} className="relative pt-12 pb-12 md:pt-24 md:pb-24 px-6 md:px-24 bg-[#030303]">
         <div className="max-w-6xl mx-auto space-y-0">
-          <div className="mb-20 text-center space-y-4">
+          <div className="mb-12 md:mb-20 text-center space-y-4">
              <motion.span 
-               initial={{ opacity: 0 }}
+               initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
                whileInView={{ opacity: 1 }}
                className="text-gold-500 font-bold uppercase tracking-[0.5em] text-[10px]"
              >
@@ -424,10 +433,10 @@ export default function BookingPage() {
             ].map((box, i) => (
               <div key={i} className="relative group h-full">
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  transition={{ duration: 0.6, delay: isMobile ? 0 : i * 0.1 }}
                   className={`relative p-7 md:p-9 rounded-[2.2rem] overflow-hidden transition-all duration-700 shadow-2xl h-full flex flex-col ${
                     box.isGold
                     ? 'gold-gradient text-black border-none'
@@ -447,9 +456,9 @@ export default function BookingPage() {
                   <div className="relative z-10 flex flex-col gap-6 items-start h-full">
                     {/* Number & Accent Column */}
                     <div className="flex flex-col items-start space-y-2">
-                       <span className={`text-3xl md:text-4xl font-display font-light ${box.isGold ? 'text-black/20' : 'text-white/10 group-hover:text-gold-500/40'} transition-colors duration-700`}>
-                         {box.num}
-                       </span>
+                        <span className={`text-3xl md:text-4xl font-display font-light ${box.isGold ? 'text-black/20' : 'text-white/60 group-hover:text-gold-500/80'} transition-colors duration-700`}>
+                          {box.num}
+                        </span>
                        <div className={`w-8 h-px ${box.isGold ? 'bg-black/20' : 'bg-white/10 group-hover:w-16 group-hover:bg-gold-500'} transition-all duration-700`} />
                     </div>
 
@@ -491,14 +500,14 @@ export default function BookingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="relative py-24 px-6 md:px-24 bg-black border-t border-white/5 overflow-hidden">
+      <section className="relative py-12 md:py-24 px-6 md:px-24 bg-black border-t border-white/5 overflow-hidden">
         {/* Glow effect */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gold-500/5 blur-[150px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-16 space-y-4">
+          <div className="text-center mb-10 md:mb-16 space-y-4">
              <motion.span 
-               initial={{ opacity: 0 }}
+               initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
                whileInView={{ opacity: 1 }}
                viewport={{ once: true }}
                className="text-gold-500 font-bold uppercase tracking-[0.5em] text-[10px]"
@@ -512,10 +521,10 @@ export default function BookingPage() {
             {faqs.map((faq, idx) => (
               <motion.div 
                 key={idx}
-                initial={{ opacity: 0, y: 10 }}
+                initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                transition={{ duration: 0.5, delay: isMobile ? 0 : idx * 0.05 }}
                 className={`border rounded-2xl transition-colors duration-500 overflow-hidden ${openFaqIndex === idx ? 'bg-white/[0.04] border-gold-500/30' : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.03] hover:border-white/10'}`}
               >
                 <button 
@@ -550,47 +559,48 @@ export default function BookingPage() {
       </section>
 
       {/* Footer Section */}
-      <footer className="relative py-20 px-6 md:px-24 bg-black border-t border-white/5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="md:col-span-2 space-y-6">
-            <h2 className="text-3xl font-bold display-font tracking-tighter">CALYX<span className="text-gold-500">.</span></h2>
-            <p className="text-gray-500 max-w-sm font-light leading-relaxed">
-              Empowering the next generation of hair professionals through elite technique and global artistry.
+      <footer className="relative py-12 md:py-16 px-6 md:px-24 bg-black border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
+          {/* Brand Column */}
+          <div className="space-y-4">
+            <h2 className="text-3xl font-bold tracking-tight text-white uppercase">CALYX</h2>
+            <p className="text-gray-400 text-sm font-light">
+              Professional Hair Care
             </p>
-            <div className="flex gap-4">
-              {['Instagram', 'LinkedIn', 'Twitter'].map(social => (
-                <a key={social} href="#" className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 hover:text-gold-500 transition-colors">
-                  {social}
-                </a>
-              ))}
-            </div>
           </div>
           
+          {/* Quick Links Column */}
           <div className="space-y-6">
-            <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-white">Navigation</h4>
-            <ul className="space-y-4 text-gray-500 font-light">
-              {['The Collection', 'Services', 'Events', 'Membership'].map(link => (
+            <h4 className="text-base font-bold text-white">Quick Links</h4>
+            <ul className="space-y-4 text-gray-400 font-light text-sm">
+              {['Home', 'Collection', 'About', 'Contact', 'Terms & Conditions'].map(link => (
                 <li key={link} className="hover:text-gold-500 transition-colors cursor-pointer">{link}</li>
               ))}
             </ul>
           </div>
 
-          <div className="space-y-6">
-            <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-white">Contact</h4>
-            <ul className="space-y-4 text-gray-500 font-light text-sm">
-              <li>concierge@calyx.luxury</li>
-              <li>+1 (888) 555-0812</li>
-              <li>Mayfair, London, UK</li>
-            </ul>
+          {/* Social Column */}
+          <div className="space-y-6 md:text-right">
+            <h4 className="text-base font-bold text-white md:justify-end flex">Follow Us</h4>
+            <div className="flex gap-4 md:justify-end">
+              {[
+                { name: 'Facebook', icon: <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black hover:bg-gold-500 transition-colors cursor-pointer"><span className="font-bold text-xl">f</span></div> },
+                { name: 'Instagram', icon: <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black hover:bg-gold-500 transition-colors cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                </div> }
+              ].map(social => (
+                <div key={social.name}>
+                  {social.icon}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-gray-700 uppercase tracking-[0.2em] font-bold">
-          <p>© 2026 Calyx Luxury Group. All rights reserved.</p>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-          </div>
+        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-center">
+          <p className="text-gray-500 text-sm font-light">
+            © 2025 CALYX Hair Care. All rights reserved.
+          </p>
         </div>
       </footer>
 

@@ -223,9 +223,9 @@ export default function BookingPage() {
                  transition={{ delay: 1 }}
                  className="text-right"
                >
-                  <div className="h-0.5 w-10 bg-gold-500 ml-auto mb-4" />
-                  <p className="text-6xl font-black text-white/[0.03] uppercase select-none leading-none mb-1">Artistry</p>
-                  <p className="text-lg font-light text-gray-600 tracking-[0.3em] uppercase">Master the craft</p>
+                  <div className="h-0.5 w-12 bg-gold-500 ml-auto mb-6" />
+                  <p className="text-7xl font-black text-white/[0.03] uppercase select-none leading-none mb-2 tracking-tighter">Artistry</p>
+                  <p className="text-xl font-light text-gray-500 tracking-[0.4em] uppercase">Master the craft</p>
                </motion.div>
             </div>
           </div>
@@ -281,7 +281,7 @@ export default function BookingPage() {
               </div>
 
               <div className="relative z-10 flex flex-col items-center space-y-3">
-                <div className="p-2">
+                <div className="h-10 flex items-center justify-center">
                    {item.icon}
                 </div>
                 <div className="space-y-0.5">
@@ -355,7 +355,7 @@ export default function BookingPage() {
               z: imageZ,
               filter: `grayscale(${imageGrayscale})`
             }}
-            className="relative z-10 w-full max-w-[90%] md:w-[60%] lg:w-[45%] h-[65vh] md:h-[70vh] overflow-hidden shadow-2xl mx-auto md:mx-0"
+            className="relative z-10 w-full max-w-[90%] md:w-[60%] lg:w-[45%] h-[45vw] overflow-hidden shadow-2xl mx-auto md:mx-0"
           >
             <img 
               src="/IMG_0217.JPG" 
@@ -425,8 +425,8 @@ export default function BookingPage() {
               },
               {
                 num: "CTA",
-                title: "Join the Elite",
-                desc: "Secure your place in the most anticipated hair masterclass of 2026. Limited physical seats available in Mumbai.",
+                title: "Register for the Masterclass",
+                desc: "Secure your place in the most anticipated Hair Styling Masterclass & learn the architecture of volume live in Mumbai, or join the global webinar online.",
                 icon: <ArrowRight className="w-8 h-8 text-white" />,
                 accent: "gold"
               }
@@ -464,27 +464,28 @@ export default function BookingPage() {
 
                     {/* Content Column */}
                     <div className="flex-1 space-y-3">
-                       <div className="flex items-center space-y-0 gap-3">
-                          {!box.isGold && <div className={`w-1.5 h-1.5 rounded-full bg-${box.accent === 'red' ? 'red-500' : 'gold-500'} animate-pulse`} />}
-                          <h3 className={`text-xl md:text-2xl font-bold display-font tracking-tight transition-all ${box.isGold ? 'text-black' : 'text-white group-hover:gold-text'}`}>
-                             {box.title}
-                          </h3>
-                       </div>
+                        <div className="flex items-center space-y-0 gap-3">
+                           <h3 className={`text-xl md:text-2xl font-bold display-font tracking-tight transition-all ${box.isGold ? 'text-black' : 'text-white group-hover:gold-text'}`}>
+                              {box.title}
+                           </h3>
+                        </div>
                        <p className={`text-sm md:text-base font-medium leading-relaxed transition-colors duration-500 ${box.isGold ? 'text-black/70' : 'text-gray-400 group-hover:text-gray-200'}`}>
                          {box.desc}
                        </p>
                     </div>
 
                     {/* Decorative Geometric Element */}
-                    <div className="mt-auto pt-4 flex justify-between items-center w-full">
-                        <span className={`text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full ${box.isGold ? 'bg-black/5 text-black' : 'bg-white/5 text-white/40'}`}>
-                          {box.num === 'CTA' ? 'Enroll Now' : 'Technique'}
-                        </span>
-                        <div className={`relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-700 group-hover:scale-110 ${
-                          box.isGold ? 'bg-black text-gold-500 ring-4 ring-black/5' : 'bg-white/5 text-white/20 border border-white/5 group-hover:border-gold-500/40'
+                    <div className={`mt-auto pt-4 flex items-center w-full ${box.num === 'CTA' ? 'justify-between' : 'justify-end'}`}>
+                        {box.num === 'CTA' && (
+                          <span className={`text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full ${box.isGold ? 'bg-black/5 text-black' : 'bg-white/5 text-white/40'}`}>
+                            Enroll Now
+                          </span>
+                        )}
+                        <div className={`relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-700 group-hover:scale-110 group-hover:rotate-[360deg] ${
+                          box.isGold ? 'bg-black text-gold-500 ring-8 ring-black/5' : 'bg-white/5 text-white/20 border border-white/5 group-hover:border-gold-500/40 group-hover:bg-gold-500/5'
                         }`}>
                            {box.icon && React.cloneElement(box.icon as React.ReactElement<any>, { 
-                             className: `w-4 h-4 transition-all duration-700 group-hover:translate-x-1 ${box.isGold ? 'text-gold-400' : 'text-white/40 group-hover:text-gold-500'}` 
+                             className: `w-5 h-5 transition-all duration-700 ${box.isGold ? 'text-gold-400' : 'text-white/40 group-hover:text-gold-500'}` 
                            })}
                         </div>
                     </div>
@@ -562,25 +563,51 @@ export default function BookingPage() {
       <footer className="relative py-12 md:py-16 px-6 md:px-24 bg-black border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
           {/* Brand Column */}
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold tracking-tight text-white uppercase">CALYX</h2>
-            <p className="text-gray-400 text-sm font-light">
-              Professional Hair Care
+          <div className="space-y-6">
+            <h2 className="text-4xl font-black tracking-tighter gold-text uppercase mb-2">CALYX</h2>
+            <p className="text-gray-500 text-sm font-light max-w-xs leading-relaxed">
+              Decoding the architecture of volume to elevate global hairstyling standards. Joined by International Master Artist Konstantin Borchininov.
             </p>
           </div>
           
           {/* Quick Links Column */}
           <div className="space-y-6">
-            <h4 className="text-base font-bold text-white">Quick Links</h4>
-            <ul className="space-y-4 text-gray-400 font-light text-sm">
-              {['Home', 'Collection', 'About', 'Contact', 'Terms & Conditions'].map(link => (
-                <li key={link} className="hover:text-gold-500 transition-colors cursor-pointer">{link}</li>
+            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Navigation</h4>
+            <ul className="space-y-3 text-gray-400 font-light text-sm">
+              {['Home', 'Schedule', 'About Kostya', 'Contact Us'].map(link => (
+                <li key={link} className="hover:text-gold-500 transition-colors cursor-pointer flex items-center group">
+                  <div className="w-0 group-hover:w-4 h-[1px] bg-gold-500 transition-all duration-300 mr-0 group-hover:mr-2" />
+                  {link}
+                </li>
               ))}
             </ul>
           </div>
 
+          {/* Contact Column */}
+          <div className="space-y-6">
+            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Inquiries</h4>
+            <div className="space-y-4">
+              <div>
+                <p className="text-[10px] gold-text font-bold uppercase tracking-widest mb-1">Email</p>
+                <p className="text-sm text-gray-300 font-light">Info.prolongprofessional@gmail.com</p>
+              </div>
+              <div>
+                <p className="text-[10px] gold-text font-bold uppercase tracking-widest mb-1">Phone</p>
+                <p className="text-sm text-gray-300 font-light">+91 87809-33566</p>
+              </div>
+              <div>
+                <p className="text-[10px] gold-text font-bold uppercase tracking-widest mb-1">Address</p>
+                <p className="text-sm text-gray-300 font-light leading-relaxed">
+                  A 1313 Titanium Business Park,<br />
+                  Near Makkarba Under Bridge<br />
+                  Ahmedabad 380051
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Social Column */}
-          <div className="space-y-6 md:text-right">
+          <div className="space-y-6 md:text-right flex flex-col md:items-end">
             <h4 className="text-base font-bold text-white md:justify-end flex">Follow Us</h4>
             <div className="flex gap-4 md:justify-end">
               {[
